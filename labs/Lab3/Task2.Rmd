@@ -1,0 +1,49 @@
+---
+title: "Task2"
+author: "Szymon Zosgornik"
+date: "19 maja 2020"
+output: html_document
+---
+
+# Summary of the players' statistics
+
+```{r cache=FALSE, warning=FALSE}
+library(ISLR)
+data(Hitters)
+summary(Hitters)
+```
+
+# Players' salaries in relation to number of runs
+
+```{r cache=FALSE, warning=FALSE}
+library(ggplot2)
+salaries_runs_plot <- ggplot(Hitters, aes(x = Runs, y = Salary)) + # aes, names
+                      geom_point(aes(col = League), size = 2) + # add scatterplot
+                      facet_grid(. ~ Division)
+                    
+plot(salaries_runs_plot)
+```
+
+# Number of players in the leagues and divisions
+
+```{r cache=FALSE, warning=FALSE}
+library(knitr)
+no_players <- matrix(nrow = 2, ncol = 2)
+rownames(no_players) <- c("Division W", "Division E")
+colnames(no_players) <- c("League A", "League N")
+no_players[1, 1] <- sum(Hitters$Division == "W" & Hitters$League == "A", na.rm = TRUE)
+no_players[1, 2] <- sum(Hitters$Division == "W" & Hitters$League == "N", na.rm = TRUE)
+no_players[2, 1] <- sum(Hitters$Division == "E" & Hitters$League == "A", na.rm = TRUE)
+no_players[2, 2] <- sum(Hitters$Division == "E" & Hitters$League == "N", na.rm = TRUE)
+no_players <- as.table(no_players)
+kable(no_players)
+```
+
+# Mean salaries in two leagues
+
+```{r cache=FALSE, warning=FALSE}
+hitters <- subset(Hitters, Salary >= 0)
+salaries <- aggregate(hitters$Salary, list(hitters$League), mean)
+colnames(salaries) <- c("Leagues", "Salaries")
+kable(salaries)
+```

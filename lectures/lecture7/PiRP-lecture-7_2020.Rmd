@@ -1,0 +1,66 @@
+---
+title: "Lecture 7"
+author: "Anna Papiez"
+date: "4/21/2020"
+output: pdf_document
+---
+
+Here we print the command and the output:
+```{r}
+print("Hello world!")
+```
+
+This will be only the output:
+```{r, echo=FALSE}
+print("Hello world!")
+```
+
+Unevaluated command:
+```{r, eval=FALSE}
+print("Hello world!")
+```
+
+<!-- *** -->
+
+Results not printed:
+```{r, results='hide'}
+print("Hello world!")
+```
+
+```{r}
+library(ggcorrplot)
+```
+
+Message suppresion:
+```{r, message=FALSE}
+library(ggcorrplot)
+```
+
+\pagebreak
+
+
+### Plots
+
+Log-function plot:
+
+```{r, echo=FALSE}
+plot(1:50,log(1:50))
+```
+
+
+<!-- *** -->
+
+Plot with modified size parameters:
+
+```{r, echo=FALSE, fig.width=5, fig.height=3}
+plot(1:50,log(1:50))
+```
+
+### Table
+
+```{r, echo=FALSE}
+library(knitr)
+library(ISLR)
+data(Auto)
+kable(Auto[1:5,1:4], caption = "Auto dataset")
+```

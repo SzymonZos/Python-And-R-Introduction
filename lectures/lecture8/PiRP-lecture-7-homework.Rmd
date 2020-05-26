@@ -1,0 +1,58 @@
+---
+title: "Homework"
+author: "Anna Papiez"
+date: "4/28/2020"
+output: pdf_document
+#output: html_document
+#output: beamer_presentation
+---
+
+
+## Hierarchical clustering
+
+This is a representation of hierarchical clustering results for microarray data regarding different tumors.
+
+# Complete linkage
+
+```{r, echo=FALSE, fig.height=4}
+mydata <- read.table("nci.data")
+mydata <-t(mydata)
+mydata <- scale(mydata, center=F, scale=T)
+
+labels <- read.table("nci.info", skip=20)
+labels <- as.vector(as.matrix(labels))
+
+mydist <- dist(mydata)
+
+
+plot(hclust(mydist), labels=labels, main="Complete", col="darkgreen")
+```
+
+# Average linkage
+
+```{r, echo=FALSE, fig.height=4}
+plot(hclust(mydist,method="average"), labels=labels, main="Average", col="blue")
+```
+
+# Single linkage
+
+```{r, echo=FALSE, fig.height=4}
+plot(hclust(mydist, method="single"), labels=labels, main="Single", col="orange")
+
+```
+
+## K-means clustering
+
+Below is a depiction of results of k-means clustering with three clusters on the Iris dataset.
+
+```{r, echo=FALSE, fig.height=4, message=FALSE}
+library(ade4)
+library(viridis)
+cl <- kmeans(iris[,c(1,2)],3)
+kmeansRes <- factor(cl$cluster)
+
+plot(iris[,c(1,2)],col=iris$Species,cex=3)
+
+s.class(iris[,c(1,2)],fac=kmeansRes, add.plot = T, col=viridis(3))
+```
+

@@ -1,2 +1,10 @@
 # workspacce
+.idea/*
 */.idea/*
+*/*.RData*
+*/.Rhistory
+
+# compressed
+*.zip
+*.tar.gz
+
