@@ -15,17 +15,20 @@ def get_queen_moves(x: int, y: int) -> np.array:
 
 
 # Task 3
+def add_reduce_board(board: list) -> np.array:
+    return np.transpose(np.add.reduce(np.array(board)))
+
+
 def check_queen_puzzle(chessboard: np.array) -> bool:
     positions = array_filter(chessboard, 1)
-    board = np.transpose(np.add.reduce(np.array([get_queen_moves(p[0], p[1])
-                                                 for p in positions])))
-    return np.add.reduce(np.array([board[pos] for pos in positions])) == 0
+    board = add_reduce_board([get_queen_moves(p[0], p[1]) for p in positions])
+    return not any([board[pos] for pos in positions])
 
 
 # Task 4
 def generate_system(solution: np.array) -> tuple:
     n = solution.shape[0]
-    coefficients = np.random.uniform(-1, 1, (n, n))
+    coefficients = np.random.uniform(0, 100, (n, n))
     np.fill_diagonal(coefficients, 0)
     non_diag = np.sum(abs(coefficients))
     np.fill_diagonal(coefficients, non_diag + np.random.uniform(0, non_diag))
@@ -34,13 +37,13 @@ def generate_system(solution: np.array) -> tuple:
 
 # Task 5
 def solve_system(coefficients: np.array, free_terms: np.array,
-                 threshold=0.01, limit=25):
+                 threshold=0.01, limit=25) -> np.array:
     x = np.zeros(coefficients.shape[0])
     diag = np.diag(coefficients)
     for i in range(limit):
         prev_x = x.copy()
         x = (free_terms - (coefficients - np.diagflat(diag)) @ x) / diag
-        if np.all(abs(x - prev_x) < threshold):
+        if np.allclose(x, prev_x, threshold):
             break
     return x
 
@@ -68,6 +71,7 @@ def main():
     # Task 6
     print(np.linalg.solve(*linear_system))
     print(np.linalg.inv(linear_system[0]).dot(linear_system[1]))
+    print(all([1, 0, 1]))
 
 
 if __name__ == "__main__":
