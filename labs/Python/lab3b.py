@@ -18,19 +18,19 @@ class Timer:
 
 # Task 5
 def root(number: float, order: int) -> float:
-    return number ** (1.0 / order)
+    return number ** (1.0 / (order + 2))
 
 
 def sequential(x: float, results: np.array, iterations: int) -> None:
     for i in range(iterations):
-        results[i] = root(x, i + 1)
+        results[i] = root(x, i)
 
 
 # Task 6
 def multiprocess(x: float, results: np.array,
                  iterations: int, pool: mp.Pool) -> None:
     with pool:
-        res = pool.starmap(root, ((x, i + 1) for i in range(iterations)))
+        res = pool.starmap(root, ((x, i) for i in range(iterations)))
     results[:] = res
 
 
@@ -38,7 +38,7 @@ def multiprocess(x: float, results: np.array,
 def root_array(number: float, begin: int, size: int) -> np.array:
     results = np.empty(size)
     for i in range(size):
-        results[i] = root(number, begin + i + 1)
+        results[i] = root(number, begin + i)
     return results
 
 
@@ -63,7 +63,7 @@ def task(job_id: int, lock: mp.Lock) -> None:
 
 def main():
     # Task 5, 6, 7
-    iterations = int(1e7)
+    iterations = int(1e6)
     np.random.seed(237)
     x = np.random.uniform(1, 100)
     results = np.empty(iterations)
@@ -76,6 +76,11 @@ def main():
         print(algorithm.func.__name__)
         with Timer():
             algorithm()
+    """
+    The best performance can be achieved using multiprocess_array function.
+    VM with limited amount of cores: sequential is faster than multiprocess. 
+    Host: multiprocess is faster than sequential.
+    """
 
     # Task 8
     lock = mp.Lock()

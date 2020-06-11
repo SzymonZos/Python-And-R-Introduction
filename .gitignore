@@ -1,10 +1,13 @@
 # workspacce
 .idea/*
-*/.idea/*
+**/.idea/*
 */*.RData*
 */.Rhistory
 
 # compressed
 *.zip
 *.tar.gz
+
+# cache
+**/*cache*/*
 
